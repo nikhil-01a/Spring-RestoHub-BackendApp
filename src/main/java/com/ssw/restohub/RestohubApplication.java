@@ -1,0 +1,13 @@
+package com.ssw.restohub;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class RestohubApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(RestohubApplication.class, args);
+    }
+
+}
