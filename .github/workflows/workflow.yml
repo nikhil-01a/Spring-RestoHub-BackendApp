@@ -16,38 +16,36 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'corretto'
-        cache: maven
-   - name: Write DB Connection
-     uses: Reedyuk/write-properties@v1.0.3
-     with:
-       path: './src/main/resources/application-production.properties'
-       property: 'spring.datasource.url'
-       value: ${{ secrets.DB_CONNECTION }}
-    - name: Write DB Username
-      uses: Reedyuk/write-properties@v1.0.3
-      with:
-        path: './src/main/resources/application-production.properties'
-        property: 'spring.datasource.username'
-        value: ${{ secrets.DB_USERNAME }}
-    - name: Write DB Password
-      uses: Reedyuk/write-properties@v1.0.3
-      with:
-        path: './src/main/resources/application-production.properties'
-        property: 'spring.datasource.password'
-        value: ${{ secrets.DB_PASSWORD }}
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml -Dspring.config.location=./src/main/resources/application-production.properties
-      env: 
-       DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
-       DB_USERNAME: ${{ secrets.DB_USERNAME }}
-       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+          cache: maven
+      - name: Write DB Connection
+        uses: Reedyuk/write-properties@v1.0.3
+        with:
+          path: './src/main/resources/application-production.properties'
+          property: 'spring.datasource.url'
+          value: ${{ secrets.DB_CONNECTION }}
+      - name: Write DB Username
+        uses: Reedyuk/write-properties@v1.0.3
+        with:
+          path: './src/main/resources/application-production.properties'
+          property: 'spring.datasource.username'
+          value: ${{ secrets.DB_USERNAME }}
+      - name: Write DB Password
+        uses: Reedyuk/write-properties@v1.0.3
+        with:
+          path: './src/main/resources/application-production.properties'
+          property: 'spring.datasource.password'
+          value: ${{ secrets.DB_PASSWORD }}
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml -Dspring.config.location=./src/main/resources/application-production.properties
+        env:
+          DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
