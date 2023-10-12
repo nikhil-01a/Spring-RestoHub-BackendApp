@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### Crendentials Properties ###
-src/main/resources/*.properties
+src/main/resources/development.properties
