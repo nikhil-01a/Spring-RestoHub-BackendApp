@@ -26,23 +26,20 @@ jobs:
           distribution: 'corretto'
           cache: maven
       - name: Write DB Connection
-        uses: Reedyuk/write-properties@v1.0.3
-        with:
-          path: './src/main/resources/application-production.properties'
-          property: 'spring.datasource.url'
-          value: ${{ secrets.DB_CONNECTION }}
-      - name: Write DB Username
-        uses: Reedyuk/write-properties@v1.0.3
-        with:
-          path: './src/main/resources/application-production.properties'
-          property: 'spring.datasource.username'
-          value: ${{ secrets.DB_USERNAME }}
-      - name: Write DB Password
-        uses: Reedyuk/write-properties@v1.0.3
-        with:
-          path: './src/main/resources/application-production.properties'
-          property: 'spring.datasource.password'
-          value: ${{ secrets.DB_PASSWORD }}
+        env:
+          DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          import os
+          with open('./src/main/resources/application-production.properties', 'r') as file:
+            filedata = file.read()
+          filedata = filedata.replace('DB_CONNECTION', os.getenv('DB_CONNECTION'))
+          filedata = filedata.replace('DB_USERNAME', os.getenv('DB_USERNAME'))
+          filedata = filedata.replace('DB_PASSWORD', os.getenv('DB_PASSWORD'))
+          with open('./src/main/resources/application-production.properties', 'w') as file:
+            file.write(filedata)
+        shell: python
       - name: Build with Maven
         run: mvn -B package --file pom.xml -Dspring.config.location=./src/main/resources/application-production.properties
         env:
