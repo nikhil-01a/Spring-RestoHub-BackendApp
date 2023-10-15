@@ -9,11 +9,16 @@ import java.util.List;
 
 @Component
 public class RestaurantServiceImpl implements RestaurantService {
-    @Autowired
+
     private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    RestaurantServiceImpl(RestaurantRepository restaurantRepository){
+        this.restaurantRepository = restaurantRepository;
+    }
 
     @Override
     public List<Restaurant> getAllRestaurants() {
-        return (List<Restaurant>) restaurantRepository.findAll();
+        return restaurantRepository.findAll();
     }
 }
