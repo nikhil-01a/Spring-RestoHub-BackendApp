@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     List<Restaurant> findAll();
     @Override Optional<Restaurant> findById(Long id);
+    List<Restaurant> findByZipCode(String zipCode);
 }

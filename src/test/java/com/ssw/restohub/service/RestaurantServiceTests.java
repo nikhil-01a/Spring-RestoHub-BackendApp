@@ -57,4 +57,13 @@ public class RestaurantServiceTests {
         assertThat(restaurantList).isNotNull();
         assertThat(restaurantList.size()).isEqualTo(2);
     }
+
+    @Test
+    public void whenZipCodeProvidedForSearch_thenReturnRestaurantWithGivenZipCode() {
+        String zipCode = "99999";
+        given(restaurantRepository.findByZipCode(zipCode)).willReturn(List.of(restaurant));
+        List<Restaurant> restaurantList = restaurantService.getRestaurantsByZipCode(zipCode);
+        assertThat(restaurantList).isNotNull();
+        assertThat(restaurantList.size()).isEqualTo(1);
+    }
 }
