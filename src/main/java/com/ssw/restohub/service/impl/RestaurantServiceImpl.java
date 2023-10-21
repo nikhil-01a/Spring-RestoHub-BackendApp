@@ -1,7 +1,8 @@
-package com.ssw.restohub.service;
+package com.ssw.restohub.service.impl;
 
 import com.ssw.restohub.data.Restaurant;
 import com.ssw.restohub.repositories.RestaurantRepository;
+import com.ssw.restohub.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

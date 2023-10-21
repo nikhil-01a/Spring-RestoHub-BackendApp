@@ -2,6 +2,7 @@ package com.ssw.restohub.service;
 
 import com.ssw.restohub.data.Restaurant;
 import com.ssw.restohub.repositories.RestaurantRepository;
+import com.ssw.restohub.service.impl.RestaurantServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
