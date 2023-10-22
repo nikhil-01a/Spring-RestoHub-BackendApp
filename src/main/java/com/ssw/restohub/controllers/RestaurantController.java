@@ -14,31 +14,23 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api")
+@RequestMapping("/api/restaurant")
 public class RestaurantController {
     private RestaurantService restaurantService;
-    private UserService userService;
 
     @Autowired
-    public RestaurantController(UserService userService, RestaurantService restaurantService) {
-        this.userService = userService;
+    public RestaurantController(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
     }
 
-    @GetMapping("/restaurants")
+    @GetMapping("/get-restaurants")
     public ResponseEntity<List<Restaurant>> getAllRestaurants() {
         return new ResponseEntity<>(restaurantService.getAllRestaurants(), HttpStatus.OK);
     }
 
-    @GetMapping("/restaurants/search")
+    @GetMapping("/search-restaurants")
     public ResponseEntity<List<Restaurant>> getRestaurantsByZipCode(@RequestParam(value = "zipCode") String zipCode) {
         return new ResponseEntity<>(restaurantService.getRestaurantsByZipCode(zipCode), HttpStatus.OK);
     }
-
-    @GetMapping("/userInfo")
-    public ResponseEntity<UserRole> getUser(@RequestParam(value = "userId") String userId){
-        return new ResponseEntity<>(userService.getUser(userId),HttpStatus.OK);
-    }
-
 
 }
