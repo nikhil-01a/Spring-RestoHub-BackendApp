@@ -12,6 +12,10 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration
 public class AppConfig {
 
+    // 1. Spring Security uses this UserDetailsService whenever a user tries to access apis/login through spring security, it uses
+    // the loadUserByUsername() in UserDetailsService to fetch that user's details.
+    // 2. We can build a spring security user by using 'User' which implements UserDetails.
+    // 3. We return UserDetails: user1, user2, and user3 together in the form of UserDetailsService here.
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User.builder().username("luis").password(passwordEncoder().encode("restohub")).roles("ADMIN").build();
@@ -20,6 +24,7 @@ public class AppConfig {
         return new InMemoryUserDetailsManager(user,user1,user2);
     }
 
+    //function to encode password
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
