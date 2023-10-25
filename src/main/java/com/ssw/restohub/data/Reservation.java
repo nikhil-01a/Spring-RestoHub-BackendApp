@@ -1,5 +1,6 @@
 package com.ssw.restohub.data;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,6 +29,7 @@ public class Reservation {
     private Integer partySize;
 
     @Column(name = "reservationDate", nullable = false, updatable = true, insertable = true)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date reservationDate;
 
     @Column(name = "createTime", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")
