@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UserService {
 
-    public UserRole getUser(String Username);
+     UserRole getUser(String email);
 
 }

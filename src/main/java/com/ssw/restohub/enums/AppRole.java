@@ -3,8 +3,8 @@ package com.ssw.restohub.enums;
 public enum AppRole {
 
     CUSTOMER,
-    ADMIN,
-    MANAGER,
-    STAFF,
-    WAITER,
+    RESTOHUB_OWNER,
+    RESTAURANT_MANAGER,
+    RESTAURANT_STAFF,
+    RESTAURANT_WAITER,
 }
