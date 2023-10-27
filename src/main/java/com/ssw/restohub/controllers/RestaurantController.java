@@ -1,7 +1,6 @@
 package com.ssw.restohub.controllers;
 
 import com.ssw.restohub.data.Restaurant;
-import com.ssw.restohub.data.UserRole;
 import com.ssw.restohub.service.RestaurantService;
 
 import com.ssw.restohub.service.UserService;
@@ -34,11 +33,5 @@ public class RestaurantController {
     public ResponseEntity<List<Restaurant>> getRestaurantsByZipCode(@RequestParam(value = "zipCode") String zipCode) {
         return new ResponseEntity<>(restaurantService.getRestaurantsByZipCode(zipCode), HttpStatus.OK);
     }
-
-    @GetMapping("/userInfo")
-    public ResponseEntity<UserRole> getUser(@RequestParam(value = "userId") String userId){
-        return new ResponseEntity<>(userService.getUser(userId),HttpStatus.OK);
-    }
-
 
 }
