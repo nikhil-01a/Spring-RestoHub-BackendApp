@@ -6,13 +6,13 @@ import com.ssw.restohub.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -62,6 +62,7 @@ public class UserController {
         if (dbUser.isPresent()){
             UserRole oldUser = dbUser.get();
             oldUser.setPassword(passwordEncoder.encode(newPassword));
+            oldUser.setUpdateTime(new Date());
             userRepository.save(oldUser);
         } else {
             return "Failed to change the password!";

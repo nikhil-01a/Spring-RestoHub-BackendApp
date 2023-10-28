@@ -1,15 +1,11 @@
 package com.ssw.restohub.data;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssw.restohub.enums.AppRole;
-import com.ssw.restohub.enums.ApplicationName;
-import com.ssw.restohub.enums.UserAccess;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -32,21 +28,14 @@ public class UserRole implements UserDetails {
     private String email;
     @Column(name = "password")
     private String password;
-    @Column(name = "userAccess")
-    @Enumerated(EnumType.STRING)
-    private UserAccess userAccess;
     @Column(name = "appRole")
     @Enumerated(EnumType.STRING)
     private AppRole appRole;
-    @Column(name = "createTime",updatable = false,insertable = false)
+    @Column(name = "createTime", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")
     private Date createTime;
-    @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updateTime",insertable = false)
     private Date updateTime;
-    @Column(name = "updateUser")
-    @JsonProperty(value = "updateUser")
-    private String updateUser;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

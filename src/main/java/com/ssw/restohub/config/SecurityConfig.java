@@ -44,7 +44,7 @@ public class SecurityConfig {
         httpSecurity.csrf(csrf -> csrf.disable())
                     .cors(cors -> cors.disable())
                     .authorizeHttpRequests( auth ->
-                                auth.requestMatchers("/api/restaurants/search").permitAll() // This request won't need you to be logged in
+                                auth.requestMatchers("/api/*").permitAll() // This request won't need you to be logged in
                                     .requestMatchers("/login").permitAll() // This request won't need you to be logged in
                                     .anyRequest().authenticated()) // For any other requests apart from above you'll need to be logged / Add more .permitAll() requests above if need be
                     .exceptionHandling( ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint)) // Passing unauthenticated requests through our entry point if exception occurs
