@@ -1,8 +1,9 @@
 package com.ssw.restohub.controllers;
 
+import com.ssw.restohub.data.Reservation;
 import com.ssw.restohub.data.Restaurant;
+import com.ssw.restohub.service.ReservationService;
 import com.ssw.restohub.service.RestaurantService;
-
 import com.ssw.restohub.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,11 +18,13 @@ import java.util.List;
 public class RestaurantController {
     private RestaurantService restaurantService;
     private UserService userService;
+    private ReservationService reservationService;
 
     @Autowired
-    public RestaurantController(UserService userService, RestaurantService restaurantService) {
+    public RestaurantController(UserService userService, RestaurantService restaurantService, ReservationService reservationService) {
         this.userService = userService;
         this.restaurantService = restaurantService;
+        this.reservationService = reservationService;
     }
 
     @GetMapping("/restaurants")
@@ -32,6 +35,12 @@ public class RestaurantController {
     @GetMapping("/restaurants/search")
     public ResponseEntity<List<Restaurant>> getRestaurantsByZipCode(@RequestParam(value = "zipCode") String zipCode) {
         return new ResponseEntity<>(restaurantService.getRestaurantsByZipCode(zipCode), HttpStatus.OK);
+    }
+
+    @GetMapping("/reservations/getReservedTimes")
+    public ResponseEntity<List<Reservation>> getAllUnavailableReservations(@RequestParam(value = "restaurantId") Long restaurantId,
+                                                                           @RequestParam(value = "partySize") Integer partySize) {
+        return new ResponseEntity<>(reservationService.getUnavailableReservations(restaurantId, partySize), HttpStatus.OK);
     }
 
 }

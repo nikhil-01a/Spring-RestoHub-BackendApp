@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Builder
 @Getter
@@ -56,4 +57,7 @@ public class Restaurant {
 
     @Column(name = "updateTime",insertable = false)
     private Date updateTime = new Date();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
+    private List<Reservation> reservations;
 }
