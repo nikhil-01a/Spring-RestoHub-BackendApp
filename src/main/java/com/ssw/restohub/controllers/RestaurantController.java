@@ -2,10 +2,8 @@ package com.ssw.restohub.controllers;
 
 import com.ssw.restohub.data.Reservation;
 import com.ssw.restohub.data.Restaurant;
-import com.ssw.restohub.data.UserRole;
 import com.ssw.restohub.service.ReservationService;
 import com.ssw.restohub.service.RestaurantService;
-
 import com.ssw.restohub.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,16 +37,10 @@ public class RestaurantController {
         return new ResponseEntity<>(restaurantService.getRestaurantsByZipCode(zipCode), HttpStatus.OK);
     }
 
-    @GetMapping("/userInfo")
-    public ResponseEntity<UserRole> getUser(@RequestParam(value = "userId") String userId){
-        return new ResponseEntity<>(userService.getUser(userId),HttpStatus.OK);
-    }
-
     @GetMapping("/reservations/getReservedTimes")
     public ResponseEntity<List<Reservation>> getAllUnavailableReservations(@RequestParam(value = "restaurantId") Long restaurantId,
                                                                            @RequestParam(value = "partySize") Integer partySize) {
         return new ResponseEntity<>(reservationService.getUnavailableReservations(restaurantId, partySize), HttpStatus.OK);
     }
-
 
 }

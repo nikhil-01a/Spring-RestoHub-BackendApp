@@ -4,6 +4,7 @@ import com.ssw.restohub.data.UserRole;
 import com.ssw.restohub.repositories.UserRepository;
 import com.ssw.restohub.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,8 +18,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserRole getUser(String username){
-        return userRepository.findUserRoleByUserId(username);
+    public UserRole getUser(String email){
+        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("The email entered doesn't exit!"));
     }
 
 }
