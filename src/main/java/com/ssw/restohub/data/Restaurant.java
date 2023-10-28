@@ -21,6 +21,12 @@ public class Restaurant {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "managerName")
+    private String managerName;
+
+    @Column(name = "managerEmail",unique = true)
+    private String managerEmail;
+
     @Column(name = "streetAddress1", nullable = false)
     private String streetAddress1;
 
