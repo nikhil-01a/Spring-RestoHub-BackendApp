@@ -28,6 +28,15 @@ public class Reservation {
     @Column(name = "partySize", nullable = false)
     private Integer partySize;
 
+    @Column(name = "firstName", nullable = false)
+    private String firstName;
+
+    @Column(name = "lastName", nullable = false)
+    private String lastName;
+
+    @Column(name = "emailAddress", nullable = false)
+    private String emailAddress;
+
     @Column(name = "reservationDate", nullable = false, updatable = true, insertable = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date reservationDate;
