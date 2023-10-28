@@ -2,7 +2,6 @@ package com.ssw.restohub.controllers;
 
 import com.ssw.restohub.data.Reservation;
 import com.ssw.restohub.data.Restaurant;
-import com.ssw.restohub.data.UserRole;
 import com.ssw.restohub.pojo.ReservationBean;
 import com.ssw.restohub.projection.UnavailableReservationTime;
 import com.ssw.restohub.repositories.ReservationRepository;
@@ -17,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -29,8 +27,7 @@ public class RestaurantController {
     private ReservationRepository reservationRepository;
 
     @Autowired
-    public RestaurantController(UserService userService, RestaurantService restaurantService,
-                                ReservationService reservationService, ReservationRepository reservationRepository) {
+    public RestaurantController(UserService userService, RestaurantService restaurantService, ReservationService reservationService) {
         this.userService = userService;
         this.restaurantService = restaurantService;
         this.reservationService = reservationService;
@@ -45,11 +42,6 @@ public class RestaurantController {
     @GetMapping("/restaurants/search")
     public ResponseEntity<List<Restaurant>> getRestaurantsByZipCode(@RequestParam(value = "zipCode") String zipCode) {
         return new ResponseEntity<>(restaurantService.getRestaurantsByZipCode(zipCode), HttpStatus.OK);
-    }
-
-    @GetMapping("/userInfo")
-    public ResponseEntity<UserRole> getUser(@RequestParam(value = "userId") String userId){
-        return new ResponseEntity<>(userService.getUser(userId),HttpStatus.OK);
     }
 
     @GetMapping("/reservations/getReservedTimes")
