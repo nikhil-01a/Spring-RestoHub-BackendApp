@@ -32,16 +32,16 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           import os
-          with open('./src/main/resources/application-production.properties', 'r') as file:
+          with open('./src/main/resources/application-prod.properties', 'r') as file:
             filedata = file.read()
           filedata = filedata.replace('DB_CONNECTION', os.getenv('DB_CONNECTION'))
           filedata = filedata.replace('DB_USERNAME', os.getenv('DB_USERNAME'))
           filedata = filedata.replace('DB_PASSWORD', os.getenv('DB_PASSWORD'))
-          with open('./src/main/resources/application-production.properties', 'w') as file:
+          with open('./src/main/resources/application-prod.properties', 'w') as file:
             file.write(filedata)
         shell: python
       - name: Build with Maven
-        run: mvn -B package --file pom.xml -Dspring.config.location=./src/main/resources/application-production.properties
+        run: mvn -B package --file pom.xml -Dspring.config.location=./src/main/resources/application-prod.properties -P prod
         env:
           DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
