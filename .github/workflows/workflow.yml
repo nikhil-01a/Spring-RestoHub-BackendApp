@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Spring Boot Test, Package, Deploy to AWS
 
 on:
   push:
@@ -46,3 +46,17 @@ jobs:
           DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      - name: Upload JAR
+          uses: actions/upload-pages-artifact@v2.0.0
+          name: artifact
+          path: target/Restohub-0.0.1-SNAPSHOT.jar
+  deploy:
+    needs: build
+    name: Deploy to AWS EBS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download RestoHub JAR
+        uses: actions/download-artifact@v2.1.1
+        with:
+          name: artifact
+      # TODO use einaregilsson/beanstalk-deploy to deploy once secrets are in place
