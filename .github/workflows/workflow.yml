@@ -46,20 +46,13 @@ jobs:
           DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-  package:
-    needs: build
-    name: Generate and Upload Package
-    runs-on: ubuntu-latest
-    steps:
-      - name: Generate JAR
-        run: mvn -B package -DskipTests --file pom.xml
       - name: Upload RestoHub JAR
         uses: actions/upload-pages-artifact@v2.0.0
         with:
           name: artifact
           path: target/Restohub-0.0.1-SNAPSHOT.jar
   deploy:
-    needs: package
+    needs: build
     name: Deploy to AWS EBS
     runs-on: ubuntu-latest
     steps:
