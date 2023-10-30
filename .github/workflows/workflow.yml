@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-pages-artifact@v2.0.0
         with:
           name: artifact
-          path: RestoHub-Backend/target/Restohub-0.0.1-SNAPSHOT.jar
+          path: /home/runner/work/RestoHub-Backend/RestoHub-Backend/target/Restohub-0.0.1-SNAPSHOT.jar
   deploy:
     needs: build
     name: Deploy to AWS EBS
