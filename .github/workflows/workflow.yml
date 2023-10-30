@@ -60,4 +60,13 @@ jobs:
         uses: actions/download-artifact@v2.1.1
         with:
           name: artifact
-      # TODO use einaregilsson/beanstalk-deploy to deploy once secrets are in place
+      - name: Deploy to ElasticBeanstalk
+        uses: einaregilsson/beanstalk-deploy@v21
+          with:
+            aws_access_key: ${{ secrets.ACCESS_KEY }}
+            aws_secret_key: ${{ secrets.ACCESS_KEY_SECRET }}
+            application_name: restohub-api
+            environment_name: Restohub-api-environment
+            version_label: ${{github.SHA}}
+            region: us-east-2
+            deployment_package: Restohub-0.0.1-SNAPSHOT.jar
