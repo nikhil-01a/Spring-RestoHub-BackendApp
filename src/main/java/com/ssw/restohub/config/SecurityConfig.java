@@ -37,6 +37,15 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
+    private final String[] PUBLIC_URLS = {
+
+            "/swagger-ui/**",
+            "/webjars/**",
+            "/swagger-resources/**",
+            "/v3/api-docs",
+
+    };
+
     // SecurityFilterChain: MAIN FILTER OF SPRING SECURITY THROUGH WHICH EVERY REQUEST PASSES
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -48,7 +57,8 @@ public class SecurityConfig {
                                     .requestMatchers("/api/restaurants/search").permitAll()
                                     .requestMatchers("/api/reservations/getReservedTimes").permitAll()
                                     .requestMatchers("/api/reservations/create").permitAll()
-                                    .requestMatchers("/login").permitAll() // This request won't need you to be logged in
+                                    .requestMatchers("/login").permitAll()
+                                    .requestMatchers(PUBLIC_URLS).permitAll()
                                     .anyRequest().authenticated()) // For any other requests apart from above you'll need to be logged / Add more .permitAll() requests above if need be
                     .exceptionHandling( ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint)) // Passing unauthenticated requests through our entry point if exception occurs
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Token authentication helps us avoid keeping sessions. Hence, it is stateless.
