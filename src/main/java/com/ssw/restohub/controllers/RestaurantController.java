@@ -45,8 +45,9 @@ public class RestaurantController {
     }
 
     @GetMapping("/reservations/getReservedTimes")
-    public ResponseEntity<List<UnavailableReservationTime>> getAllUnavailableReservations(@RequestParam(value = "restaurantId") Long restaurantId,
-                                                                                          @RequestParam(value = "partySize") Integer partySize)
+    public ResponseEntity<List<UnavailableReservationTime>> getAllUnavailableReservations(
+            @RequestParam(value = "restaurantId") Long restaurantId,
+            @RequestParam(value = "partySize") Integer partySize)
             throws Exception {
         return new ResponseEntity<>(reservationService.getUnavailableReservations(restaurantId, partySize), HttpStatus.OK);
     }
@@ -57,5 +58,15 @@ public class RestaurantController {
     public ResponseEntity<Reservation> createReservation(@RequestBody ReservationBean reservationBean)
             throws Exception {
         return new ResponseEntity<>(reservationService.saveReservation(reservationBean), HttpStatus.OK);
+    }
+
+    @GetMapping("/reservations/search")
+    public ResponseEntity<List<Reservation>> getAllReservationsForRestaurantAndTimeFrame(
+            @RequestParam(value = "restaurantId") Long restaurantId,
+            @RequestParam(value = "startDate") String startDate,
+            @RequestParam(value = "endDate") String endDate) throws Exception {
+        return new ResponseEntity<>(
+                reservationService.getReservationForRestaurantAndTimeFrame(restaurantId, startDate, endDate),
+                HttpStatus.OK);
     }
 }

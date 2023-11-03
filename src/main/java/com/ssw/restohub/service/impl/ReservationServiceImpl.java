@@ -7,6 +7,7 @@ import com.ssw.restohub.projection.UnavailableReservationTime;
 import com.ssw.restohub.repositories.ReservationRepository;
 import com.ssw.restohub.repositories.RestaurantRepository;
 import com.ssw.restohub.service.ReservationService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -57,5 +58,32 @@ public class ReservationServiceImpl implements ReservationService {
             throw new Exception("Cannot fetch unavailable reservations for invalid Restaurant");
         }
         return reservationRepository.getAllUnavailableTimes(restaurantId, partySize);
+    }
+
+    @Override
+    public List<Reservation> getReservationForRestaurantAndTimeFrame(Long restaurantId, String startDate, String endDate) throws Exception {
+        Optional<Restaurant> restaurantOptional = restaurantRepository.findById(restaurantId);
+        if (restaurantOptional.isEmpty()) {
+            throw new Exception("Cannot fetch Reservations for invalid Restaurant");
+        }
+        Restaurant restaurant = restaurantOptional.get();
+
+        if (StringUtils.isEmpty(startDate)) {
+            throw new Exception(String.format(
+                    "Please provide a valid Start Date to fetch Reservations for Restaurant: %s", restaurant.getName()));
+        }
+
+        if (StringUtils.isEmpty(endDate)) {
+            throw new Exception(String.format(
+                    "Please provide a valid End Date to fetch Reservations for Restaurant: %s", restaurant.getName()));
+        }
+
+        DateFormat frontEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat backend = new SimpleDateFormat("yyyy-MM-dd");
+
+        startDate = backend.format(frontEnd.parse(startDate));
+        endDate = backend.format(frontEnd.parse(endDate));
+
+        return reservationRepository.getReservationsForRestaurantAndTimeFrame(restaurant.getId(), startDate, endDate);
     }
 }
