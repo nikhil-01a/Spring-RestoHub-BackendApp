@@ -11,4 +11,5 @@ public interface RestaurantService {
     List<Restaurant> getAllRestaurants();
     List<Restaurant> getRestaurantsByZipCode(String zipCode);
     Optional<Restaurant> getRestaurantById(Long id);
+    Optional<Restaurant> getRestaurantByManager(String email);
 }
