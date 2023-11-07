@@ -33,4 +33,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     public List<Restaurant> getRestaurantsByZipCode(String zipCode) {
         return restaurantRepository.findByZipCode(zipCode);
     }
+
+    @Override
+    public Optional<Restaurant> getRestaurantByManager(String email){
+        return restaurantRepository.findRestaurantByManagerEmail(email);
+    }
 }
