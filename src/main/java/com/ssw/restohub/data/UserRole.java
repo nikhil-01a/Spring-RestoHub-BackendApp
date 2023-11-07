@@ -28,7 +28,6 @@ public class UserRole implements UserDetails {
     private Integer id;
     @Column(name = "email",unique = true)
     private String email;
-    @JsonIgnore
     @Column(name = "password")
     private String password;
     @Column(name = "appRole")
@@ -53,7 +52,6 @@ public class UserRole implements UserDetails {
         return this.email;  // Retuning our email field as the official username to Spring Security's 'UserDetails' class
     }
 
-    @JsonIgnore
     @Override
     public String getPassword() {
         return this.password; // Retuning our password field as the official username to Spring Security's 'UserDetails' class

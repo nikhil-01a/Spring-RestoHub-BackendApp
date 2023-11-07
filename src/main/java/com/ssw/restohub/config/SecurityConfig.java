@@ -43,6 +43,7 @@ public class SecurityConfig {
             "/webjars/**",
             "/swagger-resources/**",
             "/v3/api-docs",
+            "/api/user/save-user",
 
     };
 
