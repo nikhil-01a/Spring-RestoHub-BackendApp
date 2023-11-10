@@ -2,6 +2,7 @@ package com.ssw.restohub.controllers;
 
 import com.ssw.restohub.data.Restaurant;
 import com.ssw.restohub.data.UserRole;
+import com.ssw.restohub.enums.AppRole;
 import com.ssw.restohub.repositories.RestaurantRepository;
 import com.ssw.restohub.repositories.UserRepository;
 import com.ssw.restohub.service.AuthService;
@@ -44,12 +45,27 @@ public class UserController {
     }
 
     @PostMapping("/api/user/save-user")
-    public ResponseEntity<UserRole> saveUser(@RequestBody UserRole userRole,@RequestParam(value = "restaurantId", required = false) Long restaurantId){
+    public ResponseEntity<Object> saveUser(@RequestBody UserRole userRole,@RequestParam(value = "restaurantId", required = false) Long restaurantId){
         userRole.setPassword(passwordEncoder.encode(userRole.getPassword()));
+        if(userRole.getAppRole().equals(AppRole.RESTAURANT_MANAGER))
+        {
+            Optional<Restaurant> assignedRestaurant = restaurantService.getRestaurantById(userRole.getRestaurantId());
+            if(!assignedRestaurant.isPresent()){
+                return new ResponseEntity<>("Restaurant Not Found",HttpStatus.NOT_FOUND);
+            }
+            assignedRestaurant.get().setManagerEmail(userRole.getEmail());
+            restaurantRepository.save(assignedRestaurant.get());
+        } else if (userRole.getAppRole().equals(AppRole.RESTAURANT_STAFF)){
+
+                Optional<Restaurant> assignedRestaurant = restaurantService.getRestaurantById(userRole.getRestaurantId());
+                if(!assignedRestaurant.isPresent()){
+                    return new ResponseEntity<>("Restaurant Not Found",HttpStatus.NOT_FOUND);
+                }
+                userRole.setRestaurantId(assignedRestaurant.get().getId());
+        }
+
         userRepository.save(userRole);
-        Optional<Restaurant> assignedRestaurant = restaurantService.getRestaurantById(restaurantId);
-        assignedRestaurant.get().setManagerEmail(userRole.getEmail());
-        restaurantRepository.save(assignedRestaurant.get());
+
         return new ResponseEntity<>(userRole, HttpStatus.OK);
     }
 

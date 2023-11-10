@@ -33,6 +33,8 @@ public class UserRole implements UserDetails {
     @Column(name = "appRole")
     @Enumerated(EnumType.STRING)
     private AppRole appRole;
+    @Column(name = "restaurantId")
+    private Long restaurantId;
     @JsonIgnore
     @Column(name = "createTime", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")
     private Date createTime;
