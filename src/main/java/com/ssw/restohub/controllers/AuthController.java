@@ -56,7 +56,7 @@ public class AuthController {
 
     private Optional<Restaurant> restaurantExists (UserRole currentuserRole){
         if (currentuserRole.getAppRole().equals(AppRole.RESTAURANT_MANAGER) | currentuserRole.getAppRole().equals(AppRole.RESTAURANT_STAFF) | currentuserRole.getAppRole().equals(AppRole.RESTAURANT_WAITER) ){
-            return restaurantService.getRestaurantByManager(currentuserRole.getEmail());
+            return restaurantService.getRestaurantById(currentuserRole.getRestaurantId());
         }
         return null;
     }

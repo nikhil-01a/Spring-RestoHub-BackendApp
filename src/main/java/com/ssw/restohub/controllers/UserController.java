@@ -56,7 +56,6 @@ public class UserController {
             assignedRestaurant.get().setManagerEmail(userRole.getEmail());
             restaurantRepository.save(assignedRestaurant.get());
         } else if (userRole.getAppRole().equals(AppRole.RESTAURANT_STAFF)){
-
                 Optional<Restaurant> assignedRestaurant = restaurantService.getRestaurantById(userRole.getRestaurantId());
                 if(!assignedRestaurant.isPresent()){
                     return new ResponseEntity<>("Restaurant Not Found",HttpStatus.NOT_FOUND);
