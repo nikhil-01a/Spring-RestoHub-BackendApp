@@ -1,8 +1,11 @@
 package com.ssw.restohub.controllers;
 
+import com.ssw.restohub.data.Restaurant;
 import com.ssw.restohub.data.UserRole;
+import com.ssw.restohub.repositories.RestaurantRepository;
 import com.ssw.restohub.repositories.UserRepository;
 import com.ssw.restohub.service.AuthService;
+import com.ssw.restohub.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,21 +28,28 @@ public class UserController {
 
     private UserDetailsService userDetailsService; // To fetch user details
 
-
     private AuthService authService;
 
+    private RestaurantService restaurantService;
+    private RestaurantRepository restaurantRepository;
+
     @Autowired
-    public UserController(UserRepository userRepository,PasswordEncoder passwordEncoder,AuthService authService,UserDetailsService userDetailsService){
+    public UserController(UserRepository userRepository,PasswordEncoder passwordEncoder,AuthService authService,UserDetailsService userDetailsService,RestaurantService restaurantService,RestaurantRepository restaurantRepository){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authService = authService;
         this.userDetailsService = userDetailsService;
+        this.restaurantService=restaurantService;
+        this.restaurantRepository =restaurantRepository;
     }
 
     @PostMapping("/api/user/save-user")
-    public ResponseEntity<UserRole> saveUser(@RequestBody UserRole userRole){
+    public ResponseEntity<UserRole> saveUser(@RequestBody UserRole userRole,@RequestParam(value = "restaurantId", required = false) Long restaurantId){
         userRole.setPassword(passwordEncoder.encode(userRole.getPassword()));
         userRepository.save(userRole);
+        Optional<Restaurant> assignedRestaurant = restaurantService.getRestaurantById(restaurantId);
+        assignedRestaurant.get().setManagerEmail(userRole.getEmail());
+        restaurantRepository.save(assignedRestaurant.get());
         return new ResponseEntity<>(userRole, HttpStatus.OK);
     }
 
