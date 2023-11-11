@@ -25,7 +25,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
              "    select * from reservation " +
              "    where restaurant_id = :restaurantId " +
              "    and reservation_date > TO_TIMESTAMP(:startDate, 'YYYY-MM-DD') " +
-             "    and reservation_date < TO_TIMESTAMP(:endDate, 'YYYY-MM-DD') ";
+             "    and reservation_date < TO_TIMESTAMP(:endDate, 'YYYY-MM-DD') " +
+             "    and checked_in = false ";
 
     @Query(value = GET_UNAVAILABLE_TIMES, nativeQuery = true)
     List<UnavailableReservationTime> getAllUnavailableTimes(
