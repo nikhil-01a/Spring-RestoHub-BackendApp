@@ -11,5 +11,6 @@ import java.util.List;
 public interface ReservationService {
     List<UnavailableReservationTime> getUnavailableReservations(Long restaurantId, Integer partySize) throws Exception;
     List<Reservation> getReservationForRestaurantAndTimeFrame(Long restaurantId, String startDate, String endDate) throws Exception;
+    Reservation customerReservationCheckIn(Long reservationId) throws Exception;
     Reservation saveReservation(ReservationBean reservationBean) throws Exception;
 }

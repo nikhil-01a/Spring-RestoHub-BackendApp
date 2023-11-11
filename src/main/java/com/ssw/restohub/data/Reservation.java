@@ -46,4 +46,7 @@ public class Reservation {
 
     @Column(name = "updateTime", insertable = false)
     private Date updateTime = new Date();
+
+    @Column(name = "checkedIn", columnDefinition = "boolean default false")
+    private Boolean checkedIn = false;
 }
