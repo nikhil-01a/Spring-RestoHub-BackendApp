@@ -86,4 +86,16 @@ public class ReservationServiceImpl implements ReservationService {
 
         return reservationRepository.getReservationsForRestaurantAndTimeFrame(restaurant.getId(), startDate, endDate);
     }
+
+    @Override
+    public Reservation customerReservationCheckIn(Long reservationId) throws Exception {
+        Optional<Reservation> reservationOptional = reservationRepository.findById(reservationId);
+        if (reservationOptional.isEmpty()) {
+            throw new Exception("Cannot fetch Reservation for invalid Reservation ID");
+        }
+
+        Reservation reservation = reservationOptional.get();
+        reservation.setCheckedIn(true);
+        return reservationRepository.save(reservation);
+    }
 }

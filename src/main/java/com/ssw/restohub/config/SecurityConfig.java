@@ -59,6 +59,7 @@ public class SecurityConfig {
                                     .requestMatchers("/api/reservations/getReservedTimes").permitAll()
                                     .requestMatchers("/api/reservations/create").permitAll()
                                     .requestMatchers("/api/reservations/search").permitAll()
+                                    .requestMatchers("/api/reservations/checkIn").permitAll()
                                     .requestMatchers("/login").permitAll()
                                     .requestMatchers(PUBLIC_URLS).permitAll()
                                     .anyRequest().authenticated()) // For any other requests apart from above you'll need to be logged / Add more .permitAll() requests above if need be

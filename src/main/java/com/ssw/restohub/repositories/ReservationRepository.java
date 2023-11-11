@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-     String GET_UNAVAILABLE_TIMES  =
+    String GET_UNAVAILABLE_TIMES  =
             "    select rsv.reservation_date as reservationDate " +
             "    from reservation rsv " +
             "    inner join restaurant rest on (rsv.restaurant_id = rest.id) " +
@@ -21,7 +21,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             "    having sum(party_size) >= rest.capacity" +
             "    and :partySize > (rest.capacity - sum(party_size))";
 
-     String GET_RESERVATION_FOR_RESTAURANT_AND_TIME_FRAME =
+    String GET_RESERVATION_FOR_RESTAURANT_AND_TIME_FRAME =
              "    select * from reservation " +
              "    where restaurant_id = :restaurantId " +
              "    and reservation_date > TO_TIMESTAMP(:startDate, 'YYYY-MM-DD') " +

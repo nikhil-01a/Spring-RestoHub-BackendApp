@@ -69,4 +69,10 @@ public class RestaurantController {
                 reservationService.getReservationForRestaurantAndTimeFrame(restaurantId, startDate, endDate),
                 HttpStatus.OK);
     }
+
+    @PutMapping(value = "/reservations/checkIn")
+    public ResponseEntity<Reservation> updateReservationCheckIn(
+            @RequestParam(name = "reservationId") Long reservationId) throws Exception {
+        return new ResponseEntity<>(reservationService.customerReservationCheckIn(reservationId), HttpStatus.OK);
+    }
 }
