@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Order")
+@Table(name = "Orders")
 public class Order {
 
     @Id
@@ -43,8 +43,8 @@ public class Order {
     @JoinColumn(name = "restaurantId",nullable = false)
     private Restaurant restaurant;
 
-    @OneToMany(mappedBy = "order",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "order",cascade = CascadeType.ALL)
+    List<OrderItem> orderItems;
 
 
 }
