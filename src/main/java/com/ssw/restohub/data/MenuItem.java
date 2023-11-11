@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -32,5 +34,8 @@ public class MenuItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurantId",nullable = false)
     private Restaurant restaurant;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menuItem",cascade = CascadeType.ALL)
+    List<OrderItem> orderItems;
 
 }

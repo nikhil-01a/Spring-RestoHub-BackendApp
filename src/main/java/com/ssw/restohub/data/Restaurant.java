@@ -64,4 +64,7 @@ public class Restaurant {
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<MenuItem> menuItems;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "restaurant",cascade = CascadeType.ALL)
+    private List<Order> orders;
 }
