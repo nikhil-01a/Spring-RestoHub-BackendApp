@@ -3,6 +3,7 @@ package com.ssw.restohub.data;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 import java.util.Date;
 import java.util.List;
 
@@ -60,4 +61,10 @@ public class Restaurant {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<Reservation> reservations;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "restaurant", cascade = CascadeType.ALL)
+    private List<MenuItem> menuItems;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "restaurant",cascade = CascadeType.ALL)
+    private List<Order> orders;
 }
