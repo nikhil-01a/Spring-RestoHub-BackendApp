@@ -7,9 +7,11 @@ import com.ssw.restohub.repositories.RestaurantRepository;
 import com.ssw.restohub.repositories.UserRepository;
 import com.ssw.restohub.service.AuthService;
 import com.ssw.restohub.service.RestaurantService;
+import com.ssw.restohub.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -34,38 +36,44 @@ public class UserController {
     private RestaurantService restaurantService;
     private RestaurantRepository restaurantRepository;
 
+    private UserService userService;
+
     @Autowired
-    public UserController(UserRepository userRepository,PasswordEncoder passwordEncoder,AuthService authService,UserDetailsService userDetailsService,RestaurantService restaurantService,RestaurantRepository restaurantRepository){
+    public UserController(UserRepository userRepository,PasswordEncoder passwordEncoder,AuthService authService,UserDetailsService userDetailsService,RestaurantService restaurantService,RestaurantRepository restaurantRepository,UserService userService){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authService = authService;
         this.userDetailsService = userDetailsService;
         this.restaurantService=restaurantService;
         this.restaurantRepository =restaurantRepository;
+        this.userService = userService;
     }
 
     @PostMapping("/api/user/save-user")
-    public ResponseEntity<Object> saveUser(@RequestBody UserRole userRole,@RequestParam(value = "restaurantId", required = false) Long restaurantId){
-        userRole.setPassword(passwordEncoder.encode(userRole.getPassword()));
-        if(userRole.getAppRole().equals(AppRole.RESTAURANT_MANAGER))
-        {
-            Optional<Restaurant> assignedRestaurant = restaurantService.getRestaurantById(userRole.getRestaurantId());
-            if(!assignedRestaurant.isPresent()){
-                return new ResponseEntity<>("Restaurant Not Found",HttpStatus.NOT_FOUND);
-            }
-            assignedRestaurant.get().setManagerEmail(userRole.getEmail());
-            restaurantRepository.save(assignedRestaurant.get());
-        } else if (userRole.getAppRole().equals(AppRole.RESTAURANT_STAFF)){
+    public ResponseEntity<Object> saveUser(@RequestBody UserRole userRole){
+        UserRole userRoleCheck = userService.getUser(userRole.getEmail());
+        if(userRoleCheck == null) {
+            userRole.setPassword(passwordEncoder.encode(userRole.getPassword()));
+            if (userRole.getAppRole().equals(AppRole.RESTAURANT_MANAGER)) {
                 Optional<Restaurant> assignedRestaurant = restaurantService.getRestaurantById(userRole.getRestaurantId());
-                if(!assignedRestaurant.isPresent()){
-                    return new ResponseEntity<>("Restaurant Not Found",HttpStatus.NOT_FOUND);
+                if (!assignedRestaurant.isPresent()) {
+                    return new ResponseEntity<>("Restaurant Not Found", HttpStatus.NOT_FOUND);
+                }
+                assignedRestaurant.get().setManagerEmail(userRole.getEmail());
+                restaurantRepository.save(assignedRestaurant.get());
+            } else if (userRole.getAppRole().equals(AppRole.RESTAURANT_STAFF)) {
+                Optional<Restaurant> assignedRestaurant = restaurantService.getRestaurantById(userRole.getRestaurantId());
+                if (!assignedRestaurant.isPresent()) {
+                    return new ResponseEntity<>("Restaurant Not Found", HttpStatus.NOT_FOUND);
                 }
                 userRole.setRestaurantId(assignedRestaurant.get().getId());
+            }
+            userRepository.save(userRole);
+            return new ResponseEntity<>(userRole, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Email already exists!", HttpStatus.BAD_REQUEST);
+
         }
-
-        userRepository.save(userRole);
-
-        return new ResponseEntity<>(userRole, HttpStatus.OK);
     }
 
     // JSON TO QUICKLY STORE SOMEONE, Since we don't have a UI yet
