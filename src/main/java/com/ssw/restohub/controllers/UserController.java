@@ -51,8 +51,8 @@ public class UserController {
 
     @PostMapping("/api/user/save-user")
     public ResponseEntity<Object> saveUser(@RequestBody UserRole userRole){
-        UserRole userRoleCheck = userService.getUser(userRole.getEmail());
-        if(userRoleCheck == null) {
+        Optional<UserRole> userRoleCheck = userService.userExistsCheck(userRole.getEmail());
+        if(userRoleCheck.isEmpty()) {
             userRole.setPassword(passwordEncoder.encode(userRole.getPassword()));
             if (userRole.getAppRole().equals(AppRole.RESTAURANT_MANAGER)) {
                 Optional<Restaurant> assignedRestaurant = restaurantService.getRestaurantById(userRole.getRestaurantId());
