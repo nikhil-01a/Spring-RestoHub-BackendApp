@@ -1,5 +1,6 @@
 package com.ssw.restohub.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,10 +32,12 @@ public class MenuItem {
     @Column(name = "category")
     private String category;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurantId",nullable = false)
     private Restaurant restaurant;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "menuItem",cascade = CascadeType.ALL)
     List<OrderItem> orderItems;
 

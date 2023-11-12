@@ -1,5 +1,6 @@
 package com.ssw.restohub.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class OrderItem {
     @JoinColumn(name = "menuItemId",nullable = false)
     private MenuItem menuItem;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "orderId",nullable = false)
     private Order order;

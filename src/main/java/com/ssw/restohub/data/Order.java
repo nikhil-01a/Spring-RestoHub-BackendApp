@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -26,8 +27,8 @@ public class Order {
     @Column(name = "customerId",nullable = false)
     private String customerId;
 
-    @Column(name = "orderDateTime",nullable = false)
-    private LocalDateTime orderDateTime;
+    @Column(name = "orderDateTime",nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")
+    private Date orderDateTime;
 
     @Column(name = "totalOrderAmount",nullable = false)
     private double totalOrderAmount;
@@ -44,7 +45,7 @@ public class Order {
     private Restaurant restaurant;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "order",cascade = CascadeType.ALL)
-    List<OrderItem> orderItems;
+    private List<OrderItem> orderItems;
 
 
 }
