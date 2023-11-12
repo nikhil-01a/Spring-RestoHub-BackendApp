@@ -13,4 +13,6 @@ public interface OrderService {
     Order updateOrderStatus(Long orderId, OrderStatus orderStatus);
 
     String deleteOrder(Long orderId);
+
+    Order getOrder(Long orderId);
 }

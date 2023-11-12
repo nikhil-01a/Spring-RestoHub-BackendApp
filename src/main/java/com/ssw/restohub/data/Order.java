@@ -1,5 +1,6 @@
 package com.ssw.restohub.data;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssw.restohub.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class Order {
     private String customerId;
 
     @Column(name = "orderDateTime",nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date orderDateTime;
 
     @Column(name = "totalOrderAmount",nullable = false)

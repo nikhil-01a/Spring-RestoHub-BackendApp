@@ -76,6 +76,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order getOrder(Long orderId){
+        return orderRepository.findById(orderId).orElseThrow(()-> new NoSuchElementException("Order not found!"));
+    }
+
+    @Override
     public Order updateOrderStatus(Long orderId, OrderStatus orderStatus){
         Order order = orderRepository.findById(orderId).orElseThrow(()->new NoSuchElementException("Order not found!"));
         order.setOrderStatus(orderStatus);
