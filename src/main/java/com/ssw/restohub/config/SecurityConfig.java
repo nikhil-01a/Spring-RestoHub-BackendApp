@@ -38,7 +38,6 @@ public class SecurityConfig {
     }
 
     private final String[] PUBLIC_URLS = {
-
             "/swagger-ui/**",
             "/webjars/**",
             "/swagger-resources/**",
@@ -46,7 +45,8 @@ public class SecurityConfig {
             "/api/user/save-user",
             "/api/manager/**",
             "/api/staff/**",
-
+            "/api/restaurants/**",
+            "/api/reservations/**",
     };
 
     // SecurityFilterChain: MAIN FILTER OF SPRING SECURITY THROUGH WHICH EVERY REQUEST PASSES
@@ -56,13 +56,7 @@ public class SecurityConfig {
         httpSecurity.csrf(csrf -> csrf.disable())
                     .cors(cors -> cors.disable())
                     .authorizeHttpRequests( auth ->
-                                auth.requestMatchers("/api/restaurants").permitAll() // This request won't need you to be logged in
-                                    .requestMatchers("/api/restaurants/search").permitAll()
-                                    .requestMatchers("/api/reservations/getReservedTimes").permitAll()
-                                    .requestMatchers("/api/reservations/create").permitAll()
-                                    .requestMatchers("/api/reservations/search").permitAll()
-                                    .requestMatchers("/api/reservations/checkIn").permitAll()
-                                    .requestMatchers("/login").permitAll()
+                                auth.requestMatchers("/login").permitAll()
                                     .requestMatchers(PUBLIC_URLS).permitAll()
                                     .anyRequest().authenticated()) // For any other requests apart from above you'll need to be logged / Add more .permitAll() requests above if need be
                     .exceptionHandling( ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint)) // Passing unauthenticated requests through our entry point if exception occurs
