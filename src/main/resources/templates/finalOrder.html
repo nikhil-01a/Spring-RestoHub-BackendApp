@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Invoice</title>
+    <style>
+      /* Basic CSS styling */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        font-size: 11px;
+      }
+
+      td{
+        font-size: 10px;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+    </style>
+  </head>
+  <body>
+    <h1>Order Invoice</h1>
+
+    <h2>Items</h2>
+    <table>
+      <tr>
+        <th>Item Name</th>
+        <th>Quantity</th>
+        <th>Price Per Item</th>
+        <th>Subtotal</th>
+      </tr>
+      <tr th:each="orderItem : ${data.orderItems}">
+        <td th:text="${orderItem.getMenuItem.getName()}"></td>
+        <td th:text="${orderItem.getQuantity()}"></td>
+        <td th:text="${orderItem.getPricePerItem()}"></td>
+        <td th:text="${orderItem.getSubTotal()}"></td>
+      </tr>
+    </table>
+    <br/>
+    <h2>Final Amount</h2>
+    <table>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer ID</th>
+        <th>Order Date Time</th>
+        <th>Order Status</th>
+        <th>Instructions</th>
+        <th>Total Order Amount</th>
+      </tr>
+      <tr th:each="orderInfo : ${data}">
+        <td th:text="${orderInfo.getOrderId()}"></td>
+        <td th:text="${orderInfo.getCustomerId()}"></td>
+        <td th:text="${orderInfo.getFormattedOrderDateTime()}"></td>
+        <td th:text="${orderInfo.getOrderStatus()}"></td>
+        <td th:text="${orderInfo.getInstructions()}"></td>
+        <td th:text="${orderInfo.getTotalOrderAmount()}"></td>
+      </tr>
+    </table>
+
+  </body>
+</html>

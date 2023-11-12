@@ -1,17 +1,28 @@
 package com.ssw.restohub.controllers;
 
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.DocumentException;
 import com.ssw.restohub.data.MenuItem;
 import com.ssw.restohub.data.Order;
 import com.ssw.restohub.data.OrderItem;
 import com.ssw.restohub.enums.OrderStatus;
 import com.ssw.restohub.pojo.FinalOrderInfo;
 import com.ssw.restohub.pojo.OrderRequest;
+import com.ssw.restohub.service.HtmlToPdfService;
 import com.ssw.restohub.service.MenuItemService;
 import com.ssw.restohub.service.OrderService;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.xhtmlrenderer.util.IOUtil;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -19,11 +30,13 @@ public class StaffViewController {
 
     private MenuItemService menuItemService;
     private OrderService orderService;
+    private HtmlToPdfService htmlToPdfService;
 
     @Autowired
-    public StaffViewController(MenuItemService menuItemService, OrderService orderService){
+    public StaffViewController(MenuItemService menuItemService, OrderService orderService,HtmlToPdfService htmlToPdfService){
         this.menuItemService = menuItemService;
         this.orderService = orderService;
+        this.htmlToPdfService = htmlToPdfService;
     }
 
 
@@ -77,6 +90,20 @@ public class StaffViewController {
         } catch (Exception e){
             return new ResponseEntity<>("Order couldn't be deleted!",HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping(value = "/api/staff/generatePdf")
+    public ResponseEntity<String> generateFinalOrderPdf(@RequestParam(value = "orderId") Long orderId, HttpServletResponse httpServletResponse) throws Exception {
+        FinalOrderInfo finalOrderInfo = orderService.createFinalOrderInfo(orderId);
+        if (finalOrderInfo.getOrderStatus().equals(OrderStatus.COMPLETED)) {
+            ByteArrayInputStream byteArrayInputStream = htmlToPdfService.convertHtmlToPdf(finalOrderInfo,"finalOrder");
+            httpServletResponse.setContentType("application/octet-stream");
+            httpServletResponse.setHeader("Content-Disposition","attachment; filename-finalOrderInfo.pdf");
+            IOUtils.copy(byteArrayInputStream,httpServletResponse.getOutputStream());
+        } else {
+            return new ResponseEntity<>("Order not complete yet!", HttpStatus.BAD_REQUEST);
+        }
+        return null;
     }
 
 

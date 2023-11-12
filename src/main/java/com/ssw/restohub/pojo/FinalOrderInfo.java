@@ -5,6 +5,7 @@ import com.ssw.restohub.data.OrderItem;
 import com.ssw.restohub.enums.OrderStatus;
 import lombok.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -31,5 +32,10 @@ public class FinalOrderInfo {
         this.orderItems = order.getOrderItems();
         this.instructions = order.getInstructions();
         this.totalOrderAmount = order.getTotalOrderAmount();
+    }
+
+    public String getFormattedOrderDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dateFormat.format(this.orderDateTime);
     }
 }
