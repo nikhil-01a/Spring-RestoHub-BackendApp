@@ -40,6 +40,22 @@
   </head>
   <body>
     <h1>Order Invoice</h1>
+
+    <table>
+      <tr>
+        <th>Item Name</th>
+        <th>Quantity</th>
+        <th>Price Per Item</th>
+        <th>Subtotal</th>
+      </tr>
+      <tr th:each="orderItem : ${data.orderItems}">
+        <td th:text="${orderItem.getMenuItem.getName()}"></td>
+        <td th:text="${orderItem.getQuantity()}"></td>
+        <td th:text="${orderItem.getPricePerItem()}"></td>
+        <td th:text="${orderItem.getSubTotal()}"></td>
+      </tr>
+    </table>
+    <br/>
     <table>
       <tr>
         <th>Order ID</th>
@@ -59,20 +75,5 @@
       </tr>
     </table>
 
-    <h2>Items</h2>
-    <table>
-      <tr>
-        <th>Item Name</th>
-        <th>Quantity</th>
-        <th>Price Per Item</th>
-        <th>Subtotal</th>
-      </tr>
-      <tr th:each="orderItem : ${data.orderItems}">
-        <td th:text="${orderItem.getMenuItem.getName()}"></td>
-        <td th:text="${orderItem.getQuantity()}"></td>
-        <td th:text="${orderItem.getPricePerItem()}"></td>
-        <td th:text="${orderItem.getSubTotal()}"></td>
-      </tr>
-    </table>
   </body>
 </html>
