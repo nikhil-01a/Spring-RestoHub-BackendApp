@@ -1,6 +1,8 @@
 package com.ssw.restohub.service.impl;
 
+import com.ssw.restohub.data.Order;
 import com.ssw.restohub.data.UserRole;
+import com.ssw.restohub.enums.OrderStatus;
 import com.ssw.restohub.repositories.UserRepository;
 import com.ssw.restohub.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +30,17 @@ public class UserServiceImpl implements UserService {
     public Optional<UserRole> userExistsCheck(String email) {
         return userRepository.findByEmail(email);
     }
+
+    @Override
+    public Boolean deleteByEmail(String email) {
+        try {
+            userRepository.delete(userRepository.findByEmail(email).get());
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+
 
 }

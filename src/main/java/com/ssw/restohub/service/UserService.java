@@ -12,4 +12,6 @@ public interface UserService {
 
      Optional<UserRole> userExistsCheck(String email);
 
+     Boolean deleteByEmail(String email);
+
 }
