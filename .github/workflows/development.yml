@@ -6,13 +6,17 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Spring Boot Test, Package, Deploy to AWS
+name: Spring Boot Test, Package
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - '*'
+      - '!main'
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - '*'
+      - '!main'
 
 jobs:
   build:
@@ -46,27 +50,3 @@ jobs:
           DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      - name: Upload RestoHub JAR
-        uses: actions/upload-artifact@v3
-        with:
-          name: artifact
-          path: ./target/Restohub-0.0.1-SNAPSHOT.jar
-  deploy:
-    needs: build
-    name: Deploy to AWS EBS
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download RestoHub JAR
-        uses: actions/download-artifact@v2.1.1
-        with:
-          name: artifact
-      - name: Deploy to ElasticBeanstalk
-        uses: einaregilsson/beanstalk-deploy@v21
-        with:
-          aws_access_key: ${{ secrets.ACCESS_KEY }}
-          aws_secret_key: ${{ secrets.ACCESS_KEY_SECRET }}
-          application_name: restohub-api
-          environment_name: Restohub-api-environment
-          version_label: ${{github.SHA}}
-          region: us-east-2
-          deployment_package: Restohub-0.0.1-SNAPSHOT.jar
