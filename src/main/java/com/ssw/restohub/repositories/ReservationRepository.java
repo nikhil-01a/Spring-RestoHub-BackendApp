@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
@@ -38,4 +39,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             @Param(value="restaurantId") Long restaurantId,
             @Param(value="startDate") String startDate,
             @Param(value="endDate") String endDate);
+
+    Optional<Reservation> findByReservationCode(String reservationCode);
 }

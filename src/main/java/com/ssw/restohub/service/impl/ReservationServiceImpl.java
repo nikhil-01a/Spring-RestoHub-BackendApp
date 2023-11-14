@@ -6,7 +6,9 @@ import com.ssw.restohub.pojo.ReservationBean;
 import com.ssw.restohub.projection.UnavailableReservationTime;
 import com.ssw.restohub.repositories.ReservationRepository;
 import com.ssw.restohub.repositories.RestaurantRepository;
+import com.ssw.restohub.service.EmailService;
 import com.ssw.restohub.service.ReservationService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,11 +23,13 @@ import java.util.Optional;
 public class ReservationServiceImpl implements ReservationService {
     ReservationRepository reservationRepository;
     RestaurantRepository restaurantRepository;
+    EmailService emailService;
 
     @Autowired
-    ReservationServiceImpl(ReservationRepository reservationRepository, RestaurantRepository restaurantRepository) {
+    ReservationServiceImpl(ReservationRepository reservationRepository, RestaurantRepository restaurantRepository, EmailService emailService) {
         this.reservationRepository = reservationRepository;
         this.restaurantRepository = restaurantRepository;
+        this.emailService = emailService;
     }
 
     public Optional<Restaurant> getRestaurantById(Long restaurantId) {
@@ -47,7 +51,16 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setFirstName(reservationBean.getFirstName());
         reservation.setLastName(reservationBean.getLastName());
         reservation.setPartySize(reservationBean.getPartySize());
-        return reservationRepository.save(reservation);
+        String randomCode = RandomStringUtils.randomAlphanumeric(6).toUpperCase();
+        Optional<Reservation> reservation1 = reservationRepository.findByReservationCode(randomCode);
+        while (reservation1.isPresent()){
+            randomCode = RandomStringUtils.randomAlphanumeric(6).toUpperCase();
+            reservation1 = reservationRepository.findByReservationCode(randomCode);
+        }
+        reservation.setReservationCode(randomCode);
+        reservationRepository.save(reservation);
+        emailService.sendEmail(reservationBean.getEmailAddress(),"Your reservation is confirmed","Here's your reservation code: "+randomCode);
+        return reservation;
     }
 
     @Override
