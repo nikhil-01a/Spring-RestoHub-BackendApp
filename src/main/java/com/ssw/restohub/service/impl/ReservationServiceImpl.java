@@ -59,7 +59,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
         reservation.setReservationCode(randomCode);
         reservationRepository.save(reservation);
-        emailService.sendEmail(reservationBean.getEmailAddress(),"Your reservation is confirmed","Here's your reservation code: "+randomCode);
+        emailService.sendEmail(reservationBean.getEmailAddress(),"Your reservation is confirmed!","Here's your reservation code: "+randomCode+"\nTimings: "+reservation.getReservationDate()+"\nRestaurant: "+restaurant.getName());
         return reservation;
     }
 
