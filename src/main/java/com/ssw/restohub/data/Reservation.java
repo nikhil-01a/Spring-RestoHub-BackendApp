@@ -41,6 +41,9 @@ public class Reservation {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date reservationDate;
 
+    @Column(name = "reservationCode")
+    private String reservationCode;
+
     @Column(name = "createTime", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")
     private Date createTime = new Date();
 
