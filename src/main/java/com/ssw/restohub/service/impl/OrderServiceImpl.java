@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
     public Order createOrder(OrderRequest orderRequest) {
         Order newOrder = new Order();
         Restaurant attachedRestaurant = restaurantService.getRestaurantById(orderRequest.getRestaurantId()).orElseThrow(() -> new NoSuchElementException("Restaurant not found!"));
-        newOrder.setCustomerId(orderRequest.getCustomerId());
+        newOrder.setReservationCode(orderRequest.getReservationCode());
         newOrder.setOrderStatus(orderRequest.getOrderStatus());
         newOrder.setInstructions(orderRequest.getInstructions());
         newOrder.setRestaurant(attachedRestaurant);

@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class OrderRequest {
-    private String customerId;
+    private String reservationCode;
     private OrderStatus orderStatus;
     private String instructions;
     private Long restaurantId;

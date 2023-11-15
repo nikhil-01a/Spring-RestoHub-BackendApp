@@ -61,7 +61,7 @@
     <table>
       <tr>
         <th>Order ID</th>
-        <th>Customer ID</th>
+        <th>Reservation Code</th>
         <th>Order Date Time</th>
         <th>Order Status</th>
         <th>Instructions</th>
@@ -69,7 +69,7 @@
       </tr>
       <tr th:each="orderInfo : ${data}">
         <td th:text="${orderInfo.getOrderId()}"></td>
-        <td th:text="${orderInfo.getCustomerId()}"></td>
+        <td th:text="${orderInfo.getReservationCode()}"></td>
         <td th:text="${orderInfo.getFormattedOrderDateTime()}"></td>
         <td th:text="${orderInfo.getOrderStatus()}"></td>
         <td th:text="${orderInfo.getInstructions()}"></td>

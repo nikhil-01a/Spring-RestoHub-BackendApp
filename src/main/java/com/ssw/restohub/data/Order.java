@@ -25,8 +25,8 @@ public class Order {
     @Column(name="orderId")
     private Long orderId;
 
-    @Column(name = "customerId",nullable = false)
-    private String customerId;
+    @Column(name = "reservationCode",nullable = false)
+    private String reservationCode;
 
     @Column(name = "orderDateTime",nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

@@ -17,7 +17,7 @@ import java.util.List;
 public class FinalOrderInfo {
 
     private Long orderId;
-    private String customerId;
+    private String reservationCode;
     private Date orderDateTime;
     private OrderStatus orderStatus;
     private List<OrderItem> orderItems;
@@ -26,7 +26,7 @@ public class FinalOrderInfo {
 
     public FinalOrderInfo(Order order){
         this.orderId = order.getOrderId();
-        this.customerId = order.getCustomerId();
+        this.reservationCode = order.getReservationCode();
         this.orderDateTime = order.getOrderDateTime();
         this.orderStatus = order.getOrderStatus();
         this.orderItems = order.getOrderItems();
