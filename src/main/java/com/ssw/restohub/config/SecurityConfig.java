@@ -47,6 +47,8 @@ public class SecurityConfig {
             "/api/staff/**",
             "/api/restaurants/**",
             "/api/reservations/**",
+            "/checkout",
+            "/charge",
     };
 
     // SecurityFilterChain: MAIN FILTER OF SPRING SECURITY THROUGH WHICH EVERY REQUEST PASSES
