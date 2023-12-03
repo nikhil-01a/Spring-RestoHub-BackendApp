@@ -29,6 +29,11 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
              "    and reservation_date < TO_TIMESTAMP(:endDate, 'YYYY-MM-DD') " +
              "    and checked_in = false ";
 
+    String GET_CHECKED_IN_RESERVATIONS_FOR_RESTAURANT =
+            "     select * from reservation " +
+            "     where restaurant_id = :restaurantId " +
+            "     and checked_in = true ";
+
     @Query(value = GET_UNAVAILABLE_TIMES, nativeQuery = true)
     List<UnavailableReservationTime> getAllUnavailableTimes(
             @Param(value="restaurantId") Long restaurantId,
@@ -39,6 +44,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             @Param(value="restaurantId") Long restaurantId,
             @Param(value="startDate") String startDate,
             @Param(value="endDate") String endDate);
+
+    @Query(value = GET_CHECKED_IN_RESERVATIONS_FOR_RESTAURANT, nativeQuery = true)
+    List<Reservation> getCheckedInReservationsForRestaurant(@Param(value="restaurantId") Long restaurantId);
 
     Optional<Reservation> findByReservationCode(String reservationCode);
 }

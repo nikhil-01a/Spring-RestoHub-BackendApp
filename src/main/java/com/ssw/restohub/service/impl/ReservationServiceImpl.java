@@ -111,4 +111,15 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setCheckedIn(true);
         return reservationRepository.save(reservation);
     }
+
+    @Override
+    public List<Reservation> getCheckedInReservationsForRestaurantId(Long restaurantId) throws Exception {
+        Optional<Restaurant> restaurantOptional = restaurantRepository.findById(restaurantId);
+        if (restaurantOptional.isEmpty()) {
+            throw new Exception("Cannot fetch Reservations for invalid Restaurant");
+        }
+        Restaurant restaurant = restaurantOptional.get();
+
+        return reservationRepository.getCheckedInReservationsForRestaurant(restaurant.getId());
+    }
 }

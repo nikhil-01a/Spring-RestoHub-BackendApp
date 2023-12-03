@@ -75,4 +75,10 @@ public class RestaurantController {
             @RequestParam(name = "reservationId") Long reservationId) throws Exception {
         return new ResponseEntity<>(reservationService.customerReservationCheckIn(reservationId), HttpStatus.OK);
     }
+
+    @GetMapping(value = "/reservations/checkedIn")
+    public ResponseEntity<List<Reservation>> getCheckedInCustomers(
+            @RequestParam(value = "restaurantId") Long restaurantId) throws Exception {
+        return new ResponseEntity<>(reservationService.getCheckedInReservationsForRestaurantId(restaurantId), HttpStatus.OK);
+    }
 }

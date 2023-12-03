@@ -13,4 +13,5 @@ public interface ReservationService {
     List<Reservation> getReservationForRestaurantAndTimeFrame(Long restaurantId, String startDate, String endDate) throws Exception;
     Reservation customerReservationCheckIn(Long reservationId) throws Exception;
     Reservation saveReservation(ReservationBean reservationBean) throws Exception;
+    List<Reservation> getCheckedInReservationsForRestaurantId(Long restaurantId) throws Exception;
 }
