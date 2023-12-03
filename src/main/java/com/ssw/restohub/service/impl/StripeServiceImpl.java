@@ -1,16 +1,15 @@
 package com.ssw.restohub.service.impl;
 
 import com.ssw.restohub.pojo.ChargeRequest;
+import com.ssw.restohub.pojo.PaymentResponse;
 import com.ssw.restohub.service.StripeService;
 import com.stripe.Stripe;
-import com.stripe.exception.*;
-import com.stripe.model.Charge;
-import jakarta.annotation.PostConstruct;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
+import com.stripe.param.PaymentIntentCreateParams;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class StripeServiceImpl implements StripeService {
@@ -21,13 +20,26 @@ public class StripeServiceImpl implements StripeService {
     public void init() {
         Stripe.apiKey = secretKey;
     }
+
     @Override
-    public Charge charge(ChargeRequest chargeRequest) throws APIConnectionException, APIException, AuthenticationException, InvalidRequestException, CardException {
-        Map<String, Object> chargeParams = new HashMap<>();
-        chargeParams.put("amount", chargeRequest.getAmount());
-        chargeParams.put("currency", chargeRequest.getCurrency());
-        chargeParams.put("description", chargeRequest.getDescription());
-        chargeParams.put("source", chargeRequest.getStripeToken());
-        return Charge.create(chargeParams);
+    public PaymentResponse charge(ChargeRequest chargeRequest) throws StripeException {
+        PaymentIntentCreateParams createParams = PaymentIntentCreateParams.builder()
+                .setAmount((long) chargeRequest.getAmount()) // amount should be in the smallest currency unit
+                .setCurrency(ChargeRequest.Currency.USD.toString().toLowerCase())
+                .setPaymentMethod(chargeRequest.getStripeToken()) // Assuming this is the payment method ID
+                .setConfirmationMethod(PaymentIntentCreateParams.ConfirmationMethod.AUTOMATIC)
+                .setConfirm(true)
+                .build();
+
+        PaymentIntent paymentIntent = PaymentIntent.create(createParams);
+
+        // Instead of sending the entire PaymentIntent object, send a simplified version
+        PaymentResponse response = new PaymentResponse();
+        response.setId(paymentIntent.getId());
+        response.setAmount(paymentIntent.getAmount());
+        response.setCurrency(paymentIntent.getCurrency());
+        response.setStatus(paymentIntent.getStatus());
+
+        return response;
     }
 }
