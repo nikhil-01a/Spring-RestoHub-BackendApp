@@ -50,6 +50,12 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(newOrder);
         return newOrder;
     }
+
+    @Override
+    public Order updateOrder(Order order) {
+        return orderRepository.save(order);
+    }
+
     private List<OrderItem> createOrderItems(OrderRequest orderRequest, Order newOrder){
         List<OrderItem> orderItemList = new ArrayList<>();
         orderRequest.getOrderItems().forEach(orderItem -> {
@@ -71,28 +77,29 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public FinalOrderInfo createFinalOrderInfo(Long orderId){
-        return new FinalOrderInfo(orderRepository.findById(orderId).orElseThrow(()-> new NoSuchElementException("Order Not Found!")));
+    public FinalOrderInfo createFinalOrderInfo(String reservationCode){
+        return new FinalOrderInfo(orderRepository.findByReservationCode(reservationCode));
+
     }
 
     @Override
-    public Order getOrder(Long orderId){
-        return orderRepository.findById(orderId).orElseThrow(()-> new NoSuchElementException("Order not found!"));
+    public Order getOrder(String reservationCode){
+        return orderRepository.findByReservationCode(reservationCode);
     }
 
     @Override
-    public Order updateOrderStatus(Long orderId, OrderStatus orderStatus){
-        Order order = orderRepository.findById(orderId).orElseThrow(()->new NoSuchElementException("Order not found!"));
+    public Order updateOrderStatus(String reservationCode, OrderStatus orderStatus){
+        Order order = orderRepository.findByReservationCode(reservationCode);
         order.setOrderStatus(orderStatus);
         orderRepository.save(order);
         return order;
     }
 
     @Override
-    public String deleteOrder(Long orderId){
-        Order orderToDeleted = orderRepository.findById(orderId).orElseThrow(()-> new NoSuchElementException("Order not found!"));
+    public String deleteOrder(String reservationCode){
+        Order orderToDeleted = orderRepository.findByReservationCode(reservationCode);
         if(orderToDeleted.getOrderStatus().equals(OrderStatus.COMPLETED)){
-            orderRepository.deleteById(orderId);
+            orderRepository.delete(orderToDeleted);
             return orderToDeleted.getOrderId().toString();
         }else {
             throw new IllegalArgumentException("Order status not 'COMPLETED' yet!");
