@@ -25,7 +25,7 @@ public class Order {
     @Column(name="orderId")
     private Long orderId;
 
-    @Column(name = "reservationCode",nullable = false)
+    @Column(name = "reservationCode",nullable = false,unique = true)
     private String reservationCode;
 
     @Column(name = "orderDateTime",nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")
