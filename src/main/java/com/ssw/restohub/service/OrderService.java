@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 @Service
 public interface OrderService {
     Order createOrder(OrderRequest orderRequest);
-    FinalOrderInfo createFinalOrderInfo(Long orderId);
-    Order updateOrderStatus(Long orderId, OrderStatus orderStatus);
 
-    String deleteOrder(Long orderId);
+    Order updateOrder(Order order);
+    FinalOrderInfo createFinalOrderInfo(String reservationCode);
+    Order updateOrderStatus(String reservationCode, OrderStatus orderStatus);
 
-    Order getOrder(Long orderId);
+    String deleteOrder(String reservationCode);
+
+    Order getOrder(String reservationCode);
 }

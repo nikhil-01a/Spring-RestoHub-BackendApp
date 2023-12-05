@@ -61,19 +61,41 @@ public class StaffViewController {
     }
 
     @GetMapping(value = "/api/staff/finalOrderInfo")
-    public ResponseEntity<Object> getFinalOrderInfo(@RequestParam(value = "orderId") Long orderId){
+    public ResponseEntity<Object> getFinalOrderInfo(@RequestParam(value = "reservationCode") String reservationCode){
         try {
-            return new ResponseEntity<>(orderService.createFinalOrderInfo(orderId),HttpStatus.OK);
+            return new ResponseEntity<>(orderService.createFinalOrderInfo(reservationCode),HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
 
         }
     }
 
-    @PutMapping(value = "/api/staff/updateOrderStatus")
-    public ResponseEntity<Object> updateOrderStatus(@RequestParam(value = "orderId")Long orderId, @RequestParam(value = "orderStatus") OrderStatus orderStatus){
+    @GetMapping(value = "/api/staff/getOrder")
+    public ResponseEntity<Object> getOrder(@RequestParam(value = "reservationCode") String reservationCode){
         try {
-            orderService.updateOrderStatus(orderId,orderStatus);
+            return new ResponseEntity<>(orderService.getOrder(reservationCode),HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+
+        }
+    }
+
+    @PostMapping(value = "/api/staff/updateOrder")
+    public ResponseEntity<Object> updateOrder(@RequestBody Order order){
+        try {
+            Order updatedOrder = orderService.updateOrder(order);
+            return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+
+    @PutMapping(value = "/api/staff/updateOrderStatus")
+    public ResponseEntity<Object> updateOrderStatus(@RequestParam(value = "reservationCode")String reservationCode, @RequestParam(value = "orderStatus") OrderStatus orderStatus){
+        try {
+            orderService.updateOrderStatus(reservationCode,orderStatus);
             return new ResponseEntity<>("Order updated successfully to "+orderStatus+"!",HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>("Couldn't update the order!",HttpStatus.BAD_REQUEST);
@@ -81,20 +103,20 @@ public class StaffViewController {
     }
 
     @DeleteMapping(value = "/api/staff/deleteOrder")
-    public ResponseEntity<Object> deleteOrder(@RequestParam(value = "orderId") Long orderId){
+    public ResponseEntity<Object> deleteOrder(@RequestParam(value = "reservationCode") String reservationCode){
         try {
-            orderService.deleteOrder(orderId);
+            orderService.deleteOrder(reservationCode);
             return new ResponseEntity<>("Order deleted!",HttpStatus.OK);
         }catch (IllegalArgumentException e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         } catch (Exception e){
-            return new ResponseEntity<>("Order couldn't be deleted!",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping(value = "/api/staff/generatePdf")
-    public ResponseEntity<String> generateFinalOrderPdf(@RequestParam(value = "orderId") Long orderId, HttpServletResponse httpServletResponse) throws Exception {
-        FinalOrderInfo finalOrderInfo = orderService.createFinalOrderInfo(orderId);
+    public ResponseEntity<String> generateFinalOrderPdf(@RequestParam(value = "reservationCode") String reservationCode, HttpServletResponse httpServletResponse) throws Exception {
+        FinalOrderInfo finalOrderInfo = orderService.createFinalOrderInfo(reservationCode);
         if (finalOrderInfo.getOrderStatus().equals(OrderStatus.COMPLETED)) {
             ByteArrayInputStream byteArrayInputStream = htmlToPdfService.convertHtmlToPdf(finalOrderInfo,"finalOrder");
             httpServletResponse.setContentType("application/octet-stream");
